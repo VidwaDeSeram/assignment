@@ -1,4 +1,3 @@
-
 # Event Management System Backend
 
 ## Table of Contents
@@ -58,10 +57,14 @@ Before you begin, ensure you have met the following requirements:
     Update the `application.properties` file in `src/main/resources` with your database configurations.
 
     ```properties
-    spring.datasource.url=jdbc:mysql://localhost:3306/yourdatabase
-    spring.datasource.username=yourusername
-    spring.datasource.password=yourpassword
+    spring.application.name=assignment
+    spring.datasource.url=jdbc:postgresql://monorail.proxy.rlwy.net:41715/postgres
+    spring.datasource.username=postgres
+    spring.datasource.password=JwSSEUnRRBsZYGFYSSaDeNJoZmQIoepX
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
     spring.jpa.hibernate.ddl-auto=update
+    spring.sql.init.mode=always
     ```
 
 3. **Install dependencies**
