@@ -1,0 +1,2 @@
+INSERT INTO event (name, description, date, location) VALUES ('Event 1', 'Description 1', '2023-12-01', 'Location 1');
+INSERT INTO event (name, description, date, location) VALUES ('Event 2', 'Description 2', '2023-12-02', 'Location 2');
