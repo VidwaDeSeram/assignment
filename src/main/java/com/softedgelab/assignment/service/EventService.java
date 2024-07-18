@@ -1,16 +1,17 @@
 package com.softedgelab.assignment.service;
 
 import com.softedgelab.assignment.dto.AttendeeDTO;
+import com.softedgelab.assignment.dto.EventDTO;
 import com.softedgelab.assignment.entity.Event;
 import com.softedgelab.assignment.entity.Attendee;
-import com.softedgelab.assignment.repository.EventRepository;
-import com.softedgelab.assignment.repository.AttendeeRepository;
 import com.softedgelab.assignment.exception.ResourceNotFoundException;
+import com.softedgelab.assignment.repository.EventRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -21,22 +22,39 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+    public List<EventDTO> getAllEvents() {
+        List<Event> events = eventRepository.findAll();
+        return events.stream()
+                .map(event -> modelMapper.map(event, EventDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public Event addEvent(Event event) {
-        return eventRepository.save(event);
+    public EventDTO addEvent(EventDTO eventDTO) {
+        Event event = modelMapper.map(eventDTO, Event.class);
+        event = eventRepository.save(event);
+        return modelMapper.map(event, EventDTO.class);
     }
 
-    public Event updateEvent(Long id, Event eventDetails) {
+    public EventDTO updateEvent(Long id, EventDTO eventDetails) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
-        event.setName(eventDetails.getName());
-        event.setDescription(eventDetails.getDescription());
-        event.setDate(eventDetails.getDate());
-        event.setLocation(eventDetails.getLocation());
-        return eventRepository.save(event);
+
+        // Manually update the fields
+        if (eventDetails.getName() != null) {
+            event.setName(eventDetails.getName());
+        }
+        if (eventDetails.getDescription() != null) {
+            event.setDescription(eventDetails.getDescription());
+        }
+        if (eventDetails.getDate() != null) {
+            event.setDate(eventDetails.getDate());
+        }
+        if (eventDetails.getLocation() != null) {
+            event.setLocation(eventDetails.getLocation());
+        }
+
+        event = eventRepository.save(event);
+        return modelMapper.map(event, EventDTO.class);
     }
 
     public void deleteEvent(Long id) {
@@ -45,16 +63,15 @@ public class EventService {
         eventRepository.delete(event);
     }
 
-    public Event registerAttendee(AttendeeDTO attendeeDTO) {
+    public EventDTO registerAttendee(AttendeeDTO attendeeDTO) {
         Event event = eventRepository.findById(attendeeDTO.getEventId())
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
-
         Attendee attendee = modelMapper.map(attendeeDTO, Attendee.class);
         attendee.setEvent(event);
 
         event.getAttendees().add(attendee);
         eventRepository.save(event);
 
-        return event;
+        return modelMapper.map(event, EventDTO.class);
     }
 }

@@ -1,10 +1,13 @@
-com/softedgelab/assignment/entity/Attendee.class
+com/softedgelab/assignment/Config/ModelMapperConfig.class
 com/softedgelab/assignment/AssignmentApplication.class
 com/softedgelab/assignment/repository/EventRepository.class
 com/softedgelab/assignment/repository/AttendeeRepository.class
 com/softedgelab/assignment/controller/EventController.class
+com/softedgelab/assignment/dto/AttendeeDTO.class
 com/softedgelab/assignment/entity/Event.class
-com/softedgelab/assignment/Config/WebConfig$1.class
 com/softedgelab/assignment/service/EventService.class
 com/softedgelab/assignment/exception/ResourceNotFoundException.class
+com/softedgelab/assignment/entity/Attendee.class
+com/softedgelab/assignment/dto/EventDTO.class
+com/softedgelab/assignment/Config/WebConfig$1.class
 com/softedgelab/assignment/Config/WebConfig.class

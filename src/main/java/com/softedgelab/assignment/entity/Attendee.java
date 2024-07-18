@@ -1,6 +1,7 @@
 package com.softedgelab.assignment.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Attendee {
@@ -13,6 +14,7 @@ public class Attendee {
 
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonIgnore
     private Event event;
 
     // Getters and Setters

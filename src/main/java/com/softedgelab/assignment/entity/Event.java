@@ -1,13 +1,9 @@
 package com.softedgelab.assignment.entity;
 
-import jakarta.persistence.Entity;
-
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "event")
 public class Event {
 
     @Id
@@ -16,11 +12,11 @@ public class Event {
 
     private String name;
     private String description;
-    private LocalDate date;
+    private String date;
     private String location;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Attendee> attendees;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attendee> attendees;
 
     // Getters and Setters
     public Long getId() {
@@ -47,11 +43,11 @@ public class Event {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -63,11 +59,11 @@ public class Event {
         this.location = location;
     }
 
-    public Set<Attendee> getAttendees() {
+    public List<Attendee> getAttendees() {
         return attendees;
     }
 
-    public void setAttendees(Set<Attendee> attendees) {
+    public void setAttendees(List<Attendee> attendees) {
         this.attendees = attendees;
     }
 }

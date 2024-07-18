@@ -1,10 +1,8 @@
 package com.softedgelab.assignment.controller;
 
 import com.softedgelab.assignment.dto.AttendeeDTO;
-import com.softedgelab.assignment.entity.Event;
-import com.softedgelab.assignment.entity.Attendee;
+import com.softedgelab.assignment.dto.EventDTO;
 import com.softedgelab.assignment.service.EventService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,23 +14,20 @@ import java.util.List;
 public class EventController {
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     private EventService eventService;
 
     @GetMapping
-    public List<Event> getAllEvents() {
+    public List<EventDTO> getAllEvents() {
         return eventService.getAllEvents();
     }
 
     @PostMapping
-    public Event addEvent(@RequestBody Event event) {
-        return eventService.addEvent(event);
+    public EventDTO addEvent(@RequestBody EventDTO eventDTO) {
+        return eventService.addEvent(eventDTO);
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event eventDetails) {
+    public EventDTO updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDetails) {
         return eventService.updateEvent(id, eventDetails);
     }
 
@@ -43,9 +38,8 @@ public class EventController {
     }
 
     @PostMapping("/{eventId}/attendees")
-    public Event registerAttendee(@PathVariable Long eventId, @RequestBody AttendeeDTO attendeeDTO) {
+    public EventDTO registerAttendee(@PathVariable Long eventId, @RequestBody AttendeeDTO attendeeDTO) {
         attendeeDTO.setEventId(eventId);
         return eventService.registerAttendee(attendeeDTO);
     }
 }
-
