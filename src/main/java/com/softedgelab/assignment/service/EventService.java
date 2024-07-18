@@ -1,10 +1,12 @@
 package com.softedgelab.assignment.service;
 
+import com.softedgelab.assignment.dto.AttendeeDTO;
 import com.softedgelab.assignment.entity.Event;
 import com.softedgelab.assignment.entity.Attendee;
 import com.softedgelab.assignment.repository.EventRepository;
 import com.softedgelab.assignment.repository.AttendeeRepository;
 import com.softedgelab.assignment.exception.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ import java.util.List;
 
 @Service
 public class EventService {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private EventRepository eventRepository;
@@ -40,12 +45,16 @@ public class EventService {
         eventRepository.delete(event);
     }
 
-    public Event registerAttendee(Long eventId, Attendee attendee) {
-        Event event = eventRepository.findById(eventId)
+    public Event registerAttendee(AttendeeDTO attendeeDTO) {
+        Event event = eventRepository.findById(attendeeDTO.getEventId())
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        Attendee attendee = modelMapper.map(attendeeDTO, Attendee.class);
         attendee.setEvent(event);
+
         event.getAttendees().add(attendee);
         eventRepository.save(event);
+
         return event;
     }
 }

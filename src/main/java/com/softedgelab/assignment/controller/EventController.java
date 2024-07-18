@@ -1,8 +1,10 @@
 package com.softedgelab.assignment.controller;
 
+import com.softedgelab.assignment.dto.AttendeeDTO;
 import com.softedgelab.assignment.entity.Event;
 import com.softedgelab.assignment.entity.Attendee;
 import com.softedgelab.assignment.service.EventService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private EventService eventService;
@@ -38,7 +43,9 @@ public class EventController {
     }
 
     @PostMapping("/{eventId}/attendees")
-    public Event registerAttendee(@PathVariable Long eventId, @RequestBody Attendee attendee) {
-        return eventService.registerAttendee(eventId, attendee);
+    public Event registerAttendee(@PathVariable Long eventId, @RequestBody AttendeeDTO attendeeDTO) {
+        attendeeDTO.setEventId(eventId);
+        return eventService.registerAttendee(attendeeDTO);
     }
 }
+
